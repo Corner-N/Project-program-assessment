@@ -40,21 +40,25 @@ func displayMovement(playerCharacter: String, oldPlayerPosition: [Int], playerPo
 ///
 ///Parameters:
 ///the map which the user can move around
-func movement(playerCharacter: String, oldPlayerPosition: inout [Int], playerPosition: inout [Int], underneathPlayer: String, mapScreen: [[String]]) {
+func movement(playerCharacter: String, oldPlayerPosition: inout [Int], playerPosition: inout [Int], underneathPlayer: inout String, mapScreen: [[String]]) {
     let userInput = stringInput(prompt: "Enter", errorMessage: "Fuck off")
     switch userInput {
     case "w" :
         oldPlayerPosition = playerPosition
         playerPosition[0] -= 1
+        underneathPlayer = mapScreen[playerPosition[0]][playerPosition[1]]
     case "s" :
         oldPlayerPosition = playerPosition
         playerPosition[0] += 1
+        underneathPlayer = mapScreen[playerPosition[0]][playerPosition[1]]
     case "d" :
         oldPlayerPosition = playerPosition
         playerPosition[1] -= 1
+        underneathPlayer = mapScreen[playerPosition[0]][playerPosition[1]]
     case "a" :
         oldPlayerPosition = playerPosition
         playerPosition[1] += 1
+        underneathPlayer = mapScreen[playerPosition[0]][playerPosition[1]]
     default :
         print("fuck off")
         return
@@ -62,7 +66,7 @@ func movement(playerCharacter: String, oldPlayerPosition: inout [Int], playerPos
 }
 
 while true {
-    movement(playerCharacter: playerCharacter, oldPlayerPosition: &oldPlayerPosition, playerPosition: &characterPosition, underneathPlayer: underneathPlayer, mapScreen: map)
+    movement(playerCharacter: playerCharacter, oldPlayerPosition: &oldPlayerPosition, playerPosition: &characterPosition, underneathPlayer: &underneathPlayer, mapScreen: map)
     displayMovement(playerCharacter: playerCharacter, oldPlayerPosition: oldPlayerPosition, playerPosition: characterPosition, underneathPlayer: underneathPlayer, mapScreen: &map)
     for row in map {
         for colum in row {
