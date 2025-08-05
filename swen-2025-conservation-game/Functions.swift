@@ -54,8 +54,6 @@ func controlsAndMapKey () {
 ///     mapscreen: the 2d array used for the screen.
 func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition: [Int], underneathPlayer: inout String, mapScreen: inout [[String]]) {
     
-    // Clear the screen
-    print("\u{001B}[2J")
     
     // Replace where the charcter used to be with the character that was "underneath" them.
     mapScreen[oldPlayerPosition[0]][oldPlayerPosition[1]] = underneathPlayer
@@ -63,23 +61,28 @@ func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition
     underneathPlayer = mapScreen[playerPosition[0]][playerPosition[1]]
     // add the player to the map in the new position
     mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
+}
+
+func updatescreen (map: [[String]], time: Double, errorType: String) {
     
-    // Display the map
-    for row in mapScreen {
+    
+    // Clear the screen
+    print("\u{001B}[2J")
+    
+    // print the map
+    for row in map {
         for colum in row {
             print(colum, terminator: "")
         }
         print()
     }
+    
+    // Print a different message depending on what just happened.
+    
+    if errorType == "edge" {
+        print("you cannor go any further")
+    } else if errorType == "tutorial" {
+        controlsAndMapKey()
+    }
 }
-
-/// display error message
-///
-/// parameters:
-///
-///     type of error
-
-
-
-
 

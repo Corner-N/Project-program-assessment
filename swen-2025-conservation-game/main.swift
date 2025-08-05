@@ -18,21 +18,21 @@ var time = 6.0
 var characterPosition = [29, 65]
 var oldPlayerPosition = [3, 2]
 var underneathPlayer = "."
-var updateScreen = true
 
 
 //MARK: Main code
 
 updateMap(playerCharacter: playerCharacter, oldPlayerPosition: oldPlayerPosition, playerPosition: characterPosition, underneathPlayer: &underneathPlayer, mapScreen: &map)
 
+updatescreen(map: map, time: time, errorType: "good")
+
 controlsAndMapKey()
 
 while true {
-    movement(oldPlayerPosition: &oldPlayerPosition, playerPosition: &characterPosition, mapScreen: map, mapSize: mapSize, updateScreen: &updateScreen)
+    let movement = movement(oldPlayerPosition: &oldPlayerPosition, playerPosition: &characterPosition, mapScreen: map, mapSize: mapSize)
     
-    if updateScreen {
+    if movement[0] == "update" {
         updateMap(playerCharacter: playerCharacter, oldPlayerPosition: oldPlayerPosition, playerPosition: characterPosition, underneathPlayer: &underneathPlayer, mapScreen: &map)
-        timeStep(underneathPlayer: underneathPlayer, time: &time, timeMap: map)
-        print("the time is \(time)")
     }
+    updatescreen(map: map, time: time, errorType: movement[1])
 }
