@@ -63,7 +63,7 @@ func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition
     mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
 }
 
-func updatescreen (map: [[String]], time: Double, errorType: String) {
+func updatescreen (map: [[String]], time: Double, errorType: String, timeString: String) {
     
     
     // Clear the screen
@@ -76,6 +76,8 @@ func updatescreen (map: [[String]], time: Double, errorType: String) {
         }
         print()
     }
+    
+    print("the time is \(timeString)")
     
     // Print a different message depending on what just happened.
     

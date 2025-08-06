@@ -11,16 +11,26 @@
 ///
 ///     map
 ///     movement direction
+///     player position
+///     size of the map
+///
+/// returns: Whether the player can move and if they can't what is blocking their way
 func colision(map: [[String]], movementDirection: String, playerPosition: [Int], mapSize: [Int]) -> String{
+    
+    // switch statement for the different directions the player could be moving in
     switch movementDirection {
     case "right" :
+        //check if the player is trying to walk off the edge of the map
         if playerPosition[1] == mapSize[1]{
             return "edge"
+        // check if the player is trying to walk through a gorge.
         } else if map[playerPosition[0]][playerPosition[1] + 1] == "_" {
             return "gorge"
+        // check if the player is trying to walk through a cliff
         } else if map[playerPosition[0]][playerPosition[1] + 1] == "|" {
             return "cliff"
         } else {
+            // if nothing was triggered then return good
             return "good"
         }
         
@@ -61,7 +71,14 @@ func colision(map: [[String]], movementDirection: String, playerPosition: [Int],
     }
 }
 
-
+let correctUserInputs = (
+    movementUp: "w",
+    movementDown: "s",
+    movementRight: "d",
+    movementLeft: "a",
+    helpMenu1: "h",
+    helpMenu2: "?",
+)
 /// Allow the player to move around the map
 ///
 /// Parameters:
@@ -71,13 +88,13 @@ func colision(map: [[String]], movementDirection: String, playerPosition: [Int],
 ///     mapScreen: the map which the user can move around on.
 ///     playerCorrectInput: whether the user made a valid input.
 func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapScreen: [[String]], mapSize: [Int]) -> [String] {
-    
+
     // Get the user input.
     let userInput = stringInput(prompt: "Enter", errorMessage: "how")
     
     // Switch statement for each of the valid user inputs.
     switch userInput {
-    case "w" :
+    case correctUserInputs.movementUp :
         // Call the colision function to check if the user is trying to move into a wall
         let colision = colision(map: mapScreen, movementDirection: "up", playerPosition: playerPosition, mapSize: mapSize)
         //check's that user won't go off the edge of the map and crash the game.
@@ -94,17 +111,17 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
             // tell the function to loop again
             return["dont update", colision]
         }
-    case "s" :
+        
+    case correctUserInputs.movementDown :
         let colision = colision(map: mapScreen, movementDirection: "down", playerPosition: playerPosition, mapSize: mapSize)
         if colision == "good" {
             oldPlayerPosition = playerPosition
             playerPosition[0] += 1
-            //return
             return["update", colision]
         } else {
             return ["dont Update", colision]
         }
-    case "d" :
+    case correctUserInputs.movementRight :
         let colision = colision(map: mapScreen, movementDirection: "right", playerPosition: playerPosition, mapSize: mapSize)
         if colision == "good" {
             oldPlayerPosition = playerPosition
@@ -113,7 +130,7 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
         } else {
             return ["dont Update", colision]
         }
-    case "a" :
+    case correctUserInputs.movementLeft :
         let colision = colision(map: mapScreen, movementDirection: "left", playerPosition: playerPosition, mapSize: mapSize)
         if colision == "good" {
             oldPlayerPosition = playerPosition
@@ -123,7 +140,7 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
             return ["dont Update", colision]
         }
     // Give the user the option to print the tutorial again.
-    case "?", "h" :
+    case correctUserInputs.helpMenu1, correctUserInputs.helpMenu2 :
         return ["dont Update", "tutorial"]
         
     default :

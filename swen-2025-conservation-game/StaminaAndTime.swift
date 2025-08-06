@@ -12,7 +12,7 @@
 ///     Underneath player: the character which the player is standing on.
 ///     time: the time of day: will be used to calculate the amount of food used
 ///     timemap: describes what the character is standing on.
-func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]]) {
+func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]], timeString: inout String) {
     // Switch statement for different types of things the player could be standing under.
     switch underneathPlayer {
     case "∙" :
@@ -44,6 +44,7 @@ func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]]
     if time > 24 {
         time = 0
     }
+    timeString = String(format: "%.2f", time)
 }
 
 /// Changes the stamina based on the time of day
