@@ -12,8 +12,9 @@
 ///     Underneath player: the character which the player is standing on.
 ///     time: the time of day: will be used to calculate the amount of food used
 ///     timemap: describes what the character is standing on.
-func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]], timeString: inout String) {
+func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]], timeString: inout String) -> Double {
     // Switch statement for different types of things the player could be standing under.
+    let oldTime = time
     switch underneathPlayer {
     case "∙" :
         time += 0.2
@@ -31,26 +32,46 @@ func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]]
         time += 0.2
     case "|" :
         print("how")
-        return
     case "_" :
         print("how")
-        return
     case "H" :
         print("sleeping at hut")
-        time = 6.0
+        time = 8.0
     default :
-        return
+        print("interesting")
     }
     if time > 24 {
         time = 0
     }
     timeString = String(format: "%.2f", time)
+    return oldTime
 }
 
-/// Changes the stamina based on the time of day
+/// Changes the food(stamina) based on the time of day
 ///
 /// Paramenters :
 ///
-///     Map to check where the player is
 ///     Time
-///
+///     food
+///     map
+func foodCheck(currentTime: Double, oldTime: Double, keyTimes: [Double], food: inout Int, alive: inout Bool, underneathPlayer: String) {
+    
+    // This code is brought to you by Oli Stacey.
+    for keyTime in keyTimes {
+        if (currentTime >= keyTime) != (oldTime >= keyTime) {
+            food -= 1
+            break
+        }
+    }
+    
+    if underneathPlayer == "H" {
+        food += 3
+    }
+    
+    //
+    if food < 0 {
+        alive = false
+    } else {
+        alive = true
+    }
+}

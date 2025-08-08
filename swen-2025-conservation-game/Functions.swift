@@ -5,6 +5,8 @@
 //  Created by Conor Newdick on 31/07/2025.
 //
 
+import Foundation
+
 /// Gets a String user inout from the user
 ///
 /// Parameters:  Prompt, Error message
@@ -63,7 +65,7 @@ func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition
     mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
 }
 
-func updatescreen (map: [[String]], time: Double, errorType: String, timeString: String) {
+func updatescreen (map: [[String]], time: Double, errorType: String, timeString: String, food: Int, alive: Bool) {
     
     
     // Clear the screen
@@ -77,7 +79,14 @@ func updatescreen (map: [[String]], time: Double, errorType: String, timeString:
         print()
     }
     
+    if !alive {
+        print("You ran out of food and died")
+        sleep(2)
+        exit(0)
+    }
+    
     print("the time is \(timeString)")
+    print("you have \(food) food left")
     
     // Print a different message depending on what just happened.
     
