@@ -15,12 +15,14 @@ let mapSize = [29, 66]
 let FeedingTimes = [6.0, 12.5, 18, 0.0]
 
 
+
+
 var time = 8.0
 var characterPosition = [29, 65]
 var oldPlayerPosition = [3, 2]
 var underneathPlayer = "."
 var timeString = ""
-var foodAmount = 100
+var foodAmount = 10
 var alive = true
 
 //MARK: Main code
