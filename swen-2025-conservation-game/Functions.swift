@@ -65,7 +65,7 @@ func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition
     mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
 }
 
-func updatescreen (map: [[String]], time: Double, errorType: String, timeString: String, food: Int, alive: Bool) {
+func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn, timeString: String, food: Int, alive: Bool, descriptionText: String) {
     
     
     // Clear the screen
@@ -88,12 +88,15 @@ func updatescreen (map: [[String]], time: Double, errorType: String, timeString:
     print("the time is \(timeString)")
     print("you have \(food) food left")
     
-    // Print a different message depending on what just happened.
+    // Print a different message depending on what the user tried to input.
     
-    if errorType == "edge" {
+    if movementReturn == .edge || movementReturn == .wall {
         print("you cannor go any further")
-    } else if errorType == "tutorial" {
+        
+    } else if movementReturn == .tutorial {
         controlsAndMapKey()
+    } else if movementReturn == .good {
+        print(descriptionText)
     }
 }
 

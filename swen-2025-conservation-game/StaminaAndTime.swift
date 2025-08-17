@@ -15,47 +15,173 @@
 ///     player position
 ///
 /// returns whether the user is on a special title or a normal one.
-//func typeofTitle(playerIsStandingOn: Int, playerPosition: [Int]) -> String {
-//    player
-//}
+func typeofTitle(undernethMap: [[Int]], playerPosition: [Int]) -> Bool? {
+    
+    if let _ = UnderneathMapKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]])  {
+        return true
+    } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]])  {
+        return false
+    } else {
+        return nil
+    }
+}
 
-/// Advances time for the game
+/// Advances time and adds the corect description for the tile the player is standing on
 ///
 /// Parameters:
 ///
-///     Underneath player: the character which the player is standing on.
-///     time: the time of day: will be used to calculate the amount of food used
-///     timemap: describes what the character is standing on.
-func timeStep(underneathPlayer: String, time:  inout Double, timeMap: [[String]], timeString: inout String, playerPosition: [Int], oldTime: inout Double) {
+///     the currecnt time for the game
+///     the map used to find the specific character the player is standing on
+///     the string the time is turned into to make it a small decimal point.
+///     the player's current position
+///     the time before it was advanced used by food
+///     the decription for the tile the player is standing on.
+func normalTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: inout String, playerPosition: [Int], oldTime: inout Double,) -> String? {
     
     // Logs the time before the player moves to be used in the food function.
-    let oldTime = time
+    oldTime = time
     
     // Turns the players position on the underneath map into the type of character they are staying on.
-    if let playerUnderneathType = UnderneathMapKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]])  {
+    if let playerUnderneathType = UnderneathMapKey(rawValue: UnderneathMap[playerPosition[0]][playerPosition[1]])  {
         
         // checks which type of tile the player is standing on, and changes the time accordingly.
         switch playerUnderneathType {
         case .track :
-            time += 0.2
+            time += Times.track.rawValue
+            return MainStatements.track.rawValue
         case .trapLine :
-            time += 0.5
+            time += Times.trapline.rawValue
+            return MainStatements.trapLine.rawValue
         case .forest :
-            time += 1
+            time += Times.forest.rawValue
+            return MainStatements.forest.rawValue
         case .alpine :
-            time += 0.4
+            time += Times.alpine.rawValue
+            return MainStatements.alpine.rawValue
         case .streams :
-            time += 0.7
+            time += Times.streams.rawValue
+            return MainStatements.streams.rawValue
         case .river :
-            time += 1.2
+            time += Times.river.rawValue
+            return MainStatements.river.rawValue
         case .walls :
             print("how")
-            
-            if time > 24 {
-                time = 0
+            return nil
+        }
+    } else {
+        return nil
+    }
+}
+
+/// advances time and adds the correct description for the special places.
+///
+/// Parameters:
+///
+///     the currecnt time for the game
+///     the map used to find the specific character the player is standing on
+///     the string the time is turned into to make it a small decimal point.
+///     the player's current position
+///     the time before it was advanced used by food
+///     the amount of food the player has
+/// returns: the decription for the tile the player is standing on.
+func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: inout String, playerPosition: [Int], oldTime: inout Double, hutFood: inout [UnderneathMapSpecialKey], food: inout Int) -> String? {
+    
+    oldTime = time
+    
+    if let playerTile = UnderneathMapSpecialKey(rawValue: UnderneathMap[playerPosition[0]][playerPosition[1]]) {
+        switch playerTile {
+        case .firstBridge:
+            time += 0.2
+            return specialStatements.firstBridge.rawValue
+        case .turnOffToMitreFlats:
+            time += 0.2
+            return specialStatements.turnOffToMitreFlats.rawValue
+        case .turnOffToCowCreek:
+            time += 0.2
+            return specialStatements.turnOffToCowCreek.rawValue
+        case .turnOffToMidKingBiv:
+            time += 0.2
+            return specialStatements.turnOffToMidKingBiv.rawValue
+        case .alpineToBaldyCreek:
+            time += 0.2
+            return specialStatements.alpineToBaldyCreek.rawValue
+        case .alpineToMitreTrapLine:
+            time += 0.2
+            return specialStatements.alpineToMitreTrapLine.rawValue
+        case .mitrePeak :
+            time += 0.2
+            return specialStatements.mitrePeak.rawValue
+        case .waingawaRiverCrossing:
+            time += 0.2
+            return specialStatements.waingawaRiverCrossing.rawValue
+        case .areteForksTurnOff:
+            time += 0.2
+            return specialStatements.areteForksTurnOff.rawValue
+        case .areteStreamTrapLineTurnOff:
+            time += 0.2
+            return specialStatements.areteStreamTrapLineTurnOff.rawValue
+        case .areteTrackToAlpine:
+            time += 0.2
+            return specialStatements.areteTrackToAlpine.rawValue
+        case .alpineToAreteStream:
+            time += 0.2
+            return specialStatements.alpineToAreteStream.rawValue
+        case .mitreFlats:
+            time = 7.0
+            return specialStatements.mitreFlats.rawValue
+        case .cowCreekHut:
+            time = 7.0
+            if hutFood.contains(.cowCreekHut) {
+                food += 3
+                //courtesey of xcode ai
+                hutFood.remove(at: hutFood.firstIndex(of: .cowCreekHut)! ) // check if doc is okay with this
             }
+            return specialStatements.cowCreekHut.rawValue
+        case .midKingBiv:
+            time = 7.0
+            if hutFood.contains(.midKingBiv) {
+                food += 3
+                hutFood.remove(at: hutFood.firstIndex(of: .midKingBiv)! )
+            }
+            return specialStatements.midKingBiv.rawValue
             
-            timeString = String(format: "%.2f", time)        }
+        case .areteForksHut:
+            time = 7.0
+            if hutFood.contains(.areteForksHut) {
+                food += 3
+                hutFood.remove(at: hutFood.firstIndex(of: .areteForksHut)! )
+            }
+            return specialStatements.areteForksHut.rawValue
+            
+        case .areteHut:
+            time = 7.0
+            if hutFood.contains(.areteHut) {
+                food += 3
+                hutFood.remove(at: hutFood.firstIndex(of: .areteHut)! )
+            }
+            return specialStatements.areteHut.rawValue
+            
+        case .turnOffToMitreTrapLine:
+            time += 0.2
+            return specialStatements.turnOffToMitreTrapLine.rawValue
+        case .baldyCreekIntoAlpine:
+            time += 0.2
+            return specialStatements.baldyCreekIntoAlpine.rawValue
+        case .mitreTrapLineToAlpine:
+            time += 0.2
+            return specialStatements.mitreTrapLineToAlpine.rawValue
+        case .waingawaRiverTrapLine:
+            time += 0.2
+            return specialStatements.waingawaRiverTrapLine.rawValue
+        case .waingawaRiverTrapLineEnd:
+            time += 0.2
+            return specialStatements.waingawaRiverTrapLineEnd.rawValue
+        case .areteStreamTrapLineToAlpine:
+            time += 0.2
+            return specialStatements.areteStreamTrapLineToAlpine.rawValue
+        }
+    } else {
+        return nil
     }
 }
 
@@ -83,3 +209,4 @@ func foodCheck(currentTime: Double, oldTime: Double, keyTimes: [Double], food: i
         alive = true
     }
 }
+

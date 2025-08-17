@@ -61,7 +61,9 @@ func colision(map: [[String]], movementDirection: CorrectUserInputs, playerPosit
         default :
             return .bigError
         }
-    } else {
+    } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
+        return .good
+    }else {
         return .bigError
     }
     

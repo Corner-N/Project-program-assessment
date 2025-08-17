@@ -12,18 +12,21 @@ import Foundation
 // Escape code to make a greeen @ symbol.
 let playerCharacter = "\u{001B}[32m@\u{001B}[0m"
 let mapSize = [29, 66]
-let FeedingTimes = [6.0, 12.5, 18, 0.0]
+let FeedingTimes = [8.0, 12.5, 18, 0.0]
 
 
-
-
+var descriptionText = "track"
+var hutFood: [UnderneathMapSpecialKey] = [.cowCreekHut, .areteForksHut, .midKingBiv, .areteHut]
+var oldTime = 8.0
 var time = 8.0
-var characterPosition = [29, 65]
+var characterPosition = [2, 4]
 var oldPlayerPosition = [3, 2]
 var underneathPlayer = "."
 var timeString = ""
 var foodAmount = 10
 var alive = true
+var mainDescriptionText: MainStatements = .track
+var specialdescriptionText: specialStatements
 
 //MARK: Main code
 
@@ -38,10 +41,11 @@ updateMap(
 updatescreen(
     map: map,
     time: time,
-    errorType: "good",
+    movementReturn: .good,
     timeString: timeString,
     food: foodAmount,
-    alive: true
+    alive: true,
+    descriptionText: descriptionText
 )
 
 controlsAndMapKey()
@@ -56,7 +60,7 @@ while true {
         mapSize: mapSize
     )
     
-    if movement[0] == "update" {
+    if movement.0 == true {
         updateMap(
             playerCharacter: playerCharacter,
             oldPlayerPosition: oldPlayerPosition,
@@ -65,12 +69,23 @@ while true {
             mapScreen: &map
         )
         
-        let oldTime = timeStep(
-            underneathPlayer: underneathPlayer,
-            time: &time,
-            timeMap: map,
-            timeString: &timeString
-        )
+        if let tileType = typeofTitle(undernethMap: underneathMap, playerPosition: characterPosition){
+            if tileType {
+                if let descriptionTextAttempt = normalTileTime(time: &time, UnderneathMap: underneathMap, timeString: &timeString, playerPosition: characterPosition, oldTime: &oldTime) {
+                    descriptionText = descriptionTextAttempt
+                }
+            } else {
+                if let descriptionTextAttempt = specialTileTime(time: &time, UnderneathMap: underneathMap, timeString: &timeString, playerPosition: characterPosition, oldTime: &oldTime, hutFood: &hutFood, food: &foodAmount) {
+                    descriptionText = descriptionTextAttempt
+                }
+            }
+            if time == 24 {
+                time = 0
+            }
+            
+            timeString = String(format: "%.2f", time)
+        }
+        
         
         foodCheck(
             currentTime: time,
@@ -87,10 +102,11 @@ while true {
     updatescreen(
         map: map,
         time: time,
-        errorType: movement[1],
+        movementReturn: movement.1,
         timeString: timeString,
         food: foodAmount,
-        alive: alive
+        alive: alive,
+        descriptionText: descriptionText
     )
 }
 

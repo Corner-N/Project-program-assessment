@@ -66,5 +66,53 @@ enum MovementReturn {
     case bigError
 }
 
+enum Times: Double {
+    case forest = 1.0
+    case alpine = 0.4
+    case track = 0.2
+    case trapline = 0.5
+    case streams = 0.7
+    case river = 1.2
+    
+    var description:Double {
+        return self.rawValue
+    }
+}
 
-let main = UnderneathMapKey.forest
+enum MainStatements: String {
+    case forest = "forest"
+    case alpine = "alpine"
+    case streams = "stream"
+    case river = "river"
+    case track = "track"
+    case trapLine = "trapline"
+    case walls = "error"
+}
+
+enum specialStatements: String {
+    case firstBridge = "first bridge" //
+    case turnOffToMitreFlats = "turn off to mitre flats"//
+    case mitreFlats = "mittle flats"//
+    case turnOffToMitreTrapLine = "turn off to mitre trap line"//
+    case cowCreekHut = "cow creek hut"//
+    case turnOffToCowCreek = "turn off to cow creek"//
+    case midKingBiv = "mid king biv"//
+    case turnOffToMidKingBiv = "turn off to mid king biv"//
+    case baldyCreekIntoAlpine = "baldy creek into alpine"//
+    case alpineToBaldyCreek = "alpine to baldy creek"//
+    case mitreTrapLineToAlpine = "mitre trap line to alpine"//
+    case alpineToMitreTrapLine = "alpine to mitre trap line"//
+    case mitrePeak = "mitre peak"//
+    case waingawaRiverCrossing = "waingawa river crossing"//
+    case waingawaRiverTrapLine = "waingawa river trap line"//
+    case waingawaRiverTrapLineEnd = "waingawa river trap line end"//
+    case areteForksHut = "arete forks hut"//
+    case areteForksTurnOff = "arete forks turn off"//
+    case areteStreamTrapLineTurnOff = "arete stream trap line turn off"//
+    case areteTrackToAlpine = "arete track to alpine"//
+    case areteStreamTrapLineToAlpine = "arete stream trap line to alpine"
+    case alpineToAreteStream = "alpine to arete stream"//
+    case areteHut = "arete hut"//
+}
+
+
