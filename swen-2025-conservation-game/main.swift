@@ -19,7 +19,7 @@ var descriptionText = "track"
 var hutFood: [UnderneathMapSpecialKey] = [.cowCreekHut, .areteForksHut, .midKingBiv, .areteHut]
 var oldTime = 8.0
 var time = 8.0
-var characterPosition = [2, 4]
+var characterPosition = [29, 65]
 var oldPlayerPosition = [3, 2]
 var underneathPlayer = "."
 var timeString = ""
@@ -79,7 +79,7 @@ while true {
                     descriptionText = descriptionTextAttempt
                 }
             }
-            if time == 24 {
+            if time > 24 {
                 time = 0
             }
             

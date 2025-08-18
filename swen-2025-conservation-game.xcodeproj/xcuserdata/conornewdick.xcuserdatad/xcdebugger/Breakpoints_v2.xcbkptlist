@@ -14,8 +14,8 @@
             filePath = "swen-2025-conservation-game/movement.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
+            startingLineNumber = "118"
+            endingLineNumber = "118"
             landmarkName = "movement(oldPlayerPosition:playerPosition:mapScreen:mapSize:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -30,8 +30,8 @@
             filePath = "swen-2025-conservation-game/movement.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "109"
-            endingLineNumber = "109"
+            startingLineNumber = "133"
+            endingLineNumber = "133"
             landmarkName = "movement(oldPlayerPosition:playerPosition:mapScreen:mapSize:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -46,8 +46,8 @@
             filePath = "swen-2025-conservation-game/movement.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "118"
-            endingLineNumber = "118"
+            startingLineNumber = "142"
+            endingLineNumber = "142"
             landmarkName = "movement(oldPlayerPosition:playerPosition:mapScreen:mapSize:)"
             landmarkType = "9">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "swen-2025-conservation-game/movement.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "127"
-            endingLineNumber = "127"
+            startingLineNumber = "151"
+            endingLineNumber = "151"
             landmarkName = "movement(oldPlayerPosition:playerPosition:mapScreen:mapSize:)"
             landmarkType = "9">
          </BreakpointContent>

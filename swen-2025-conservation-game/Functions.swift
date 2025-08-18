@@ -29,8 +29,8 @@ func controlsAndMapKey () {
     Controlls: use w,a,s,d to move around
     
     Map key:
-    #   Is forest area - moving in this area will take a long time.
-    ;   Is alpine area - moving in this area will not take very long.
+    ^   Is forest area - moving in this area will take a long time.
+    ,   Is alpine area - moving in this area will not take very long.
     ∙   Is a track - moving here will not take much time at all
     °   Is a trap line - moving here will take longer than a track but is still fast.
     ≈   Is a river - this won't take as long as forest but is still slow.
@@ -38,6 +38,7 @@ func controlsAndMapKey () {
     -   Is a bridge - this takes as long as a track.
     _   Is a gorge - don't even try.
     |   Is a cliff - are you trying to get killed.
+    your player character is \u{001B}[32m@\u{001B}[0m
     
     Enter ? or h to see this again.
     """)

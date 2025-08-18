@@ -15,57 +15,81 @@
 ///     size of the map
 ///
 /// returns: Whether the player can move and if they can't what is blocking their way
-func colision(map: [[String]], movementDirection: CorrectUserInputs, playerPosition: [Int], mapSize: [Int]) -> MovementReturn{
+func colision(underneathMap: [[Int]], movementDirection: CorrectUserInputs, playerPosition: [Int], mapSize: [Int]) -> MovementReturn{
     
-    if let playerUnderneathType = UnderneathMapKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
-        // switch statement for the different directions the player could be moving in
-        switch movementDirection {
-        case .movementRight :
-            //check if the player is trying to walk off the edge of the map
-            if playerPosition[1] == mapSize[1]{
-                return .edge
-                // check if the player is trying to walk through a gorge.
-            } else if playerUnderneathType ==  .walls {
-                return .wall
-                // check if the player is trying to walk through a cliff
-            } else {
-                // if nothing was triggered then return good
-                return .good
-            }
-            
-        case .movementLeft :
-            if playerPosition[1] == 0 {
-                return .edge
-            } else if playerUnderneathType ==  .walls {
-                return .wall
-            } else  {
-                return .good
-            }
-            
-        case .movementDown :
-            if playerPosition[0] == mapSize[0] {
-                return .edge
-            } else if playerUnderneathType == .walls {
-                return .wall
-            } else {
-                return .good
-            }
-        case .movementUp :
-            if playerPosition[0] == 0 {
-                return .edge
-            } else if playerUnderneathType ==  .walls {
-                return .wall
-            } else {
-                return .good
-            }
-        default :
-            return .bigError
-        }
-    } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
-        return .good
-    }else {
+    var newPlayerPosition: [Int]
+    switch movementDirection {
+    case .movementUp:
+        newPlayerPosition = [playerPosition[0] - 1, playerPosition[1]]
+    case .movementDown:
+        newPlayerPosition = [playerPosition[0] + 1, playerPosition[1]]
+    case .movementLeft:
+        newPlayerPosition = [playerPosition[0], playerPosition[1] - 1]
+    case .movementRight:
+        newPlayerPosition = [playerPosition[0], playerPosition[1] + 1]
+    default:
         return .bigError
     }
+    
+    if newPlayerPosition[0] > mapSize[0] || newPlayerPosition[1] > mapSize[1] || newPlayerPosition[0] < 0 || newPlayerPosition[1] < 0 {
+        return .edge
+    }
+    
+    if let underneathNewPosition = UnderneathMapKey(rawValue: underneathMap[newPlayerPosition[0]][newPlayerPosition[1]]) {
+        
+        if underneathNewPosition == .walls {
+            return .wall
+        } else {
+            return .good
+        }
+        
+    } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[newPlayerPosition[0]][newPlayerPosition[1]]) {
+        return .good
+    } else {
+        return .bigError
+    }
+    
+//    // switch statement for the different directions the player could be moving in
+//    switch movementDirection {
+//    case .movementRight :
+//        //check if the player is trying to walk off the edge of the map
+//        if playerPosition[1] == mapSize[1]{
+//            return .edge
+//            // check if the player is trying to walk through a gorge.
+//        } else {
+//            // if nothing was triggered then return good
+//            return .good
+//        }
+//        
+//    case .movementLeft :
+//        if playerPosition[1] == 0 {
+//            return .edge
+//        } else  {
+//            return .good
+//        }
+//        
+//    case .movementDown :
+//        if playerPosition[0] == mapSize[0] {
+//            return .edge
+//        } else {
+//            return .good
+//        }
+//    case .movementUp :
+//        if playerPosition[0] == 0 {
+//            return .edge
+//        } else {
+//            return .good
+//        }
+//    default :
+//        return .bigError
+//    }
+//    if let playerUnderneathType = UnderneathMapKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
+//        
+//    } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
+//        return .good
+//    }else {
+//        return .bigError
+//    }
     
     
 }
@@ -89,7 +113,7 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
         switch test {
         case .movementUp :
             // Call the colision function to check if the user is trying to move into a wall
-            let collision = colision(map: mapScreen, movementDirection: .movementUp, playerPosition: playerPosition, mapSize: mapSize)
+            let collision = colision(underneathMap: underneathMap, movementDirection: .movementUp, playerPosition: playerPosition, mapSize: mapSize)
             //check's that user won't go off the edge of the map and crash the game.
             if collision == .good {
                 //stores the last point the player was at to be replaced with the origional character that was there.
@@ -105,7 +129,7 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
             }
             
         case .movementDown :
-            let colision = colision(map: mapScreen, movementDirection: .movementDown, playerPosition: playerPosition, mapSize: mapSize)
+            let colision = colision(underneathMap: underneathMap, movementDirection: .movementDown, playerPosition: playerPosition, mapSize: mapSize)
             if colision == .good {
                 oldPlayerPosition = playerPosition
                 playerPosition[0] += 1
@@ -114,7 +138,7 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
                 return (false, colision)
             }
         case .movementRight :
-            let colision = colision(map: mapScreen, movementDirection: .movementRight, playerPosition: playerPosition, mapSize: mapSize)
+            let colision = colision(underneathMap: underneathMap, movementDirection: .movementRight, playerPosition: playerPosition, mapSize: mapSize)
             if colision == .good {
                 oldPlayerPosition = playerPosition
                 playerPosition[1] += 1
@@ -123,7 +147,7 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
                 return (false, colision)
             }
         case .movementLeft :
-            let colision = colision(map: mapScreen, movementDirection: .movementLeft, playerPosition: playerPosition, mapSize: mapSize)
+            let colision = colision(underneathMap: underneathMap, movementDirection: .movementLeft, playerPosition: playerPosition, mapSize: mapSize)
             if colision == .good {
                 oldPlayerPosition = playerPosition
                 playerPosition[1] -= 1
