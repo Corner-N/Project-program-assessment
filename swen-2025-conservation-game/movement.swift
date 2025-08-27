@@ -5,6 +5,8 @@
 //  Created by Conor Newdick on 04/08/2025.
 //
 
+import Foundation
+
 /// checks the colision for the player to make sure there isn't a wall in the way of the player's movement.
 ///
 /// parameters :
@@ -28,7 +30,7 @@ func colision(underneathMap: [[Int]], movementDirection: CorrectUserInputs, play
     case .movementRight:
         newPlayerPosition = [playerPosition[0], playerPosition[1] + 1]
     default:
-        return .bigError
+        exit(5)
     }
     
     if newPlayerPosition[0] > mapSize[0] || newPlayerPosition[1] > mapSize[1] || newPlayerPosition[0] < 0 || newPlayerPosition[1] < 0 {
@@ -46,51 +48,10 @@ func colision(underneathMap: [[Int]], movementDirection: CorrectUserInputs, play
     } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[newPlayerPosition[0]][newPlayerPosition[1]]) {
         return .good
     } else {
-        return .bigError
+        exit(6)
     }
     
-//    // switch statement for the different directions the player could be moving in
-//    switch movementDirection {
-//    case .movementRight :
-//        //check if the player is trying to walk off the edge of the map
-//        if playerPosition[1] == mapSize[1]{
-//            return .edge
-//            // check if the player is trying to walk through a gorge.
-//        } else {
-//            // if nothing was triggered then return good
-//            return .good
-//        }
-//        
-//    case .movementLeft :
-//        if playerPosition[1] == 0 {
-//            return .edge
-//        } else  {
-//            return .good
-//        }
-//        
-//    case .movementDown :
-//        if playerPosition[0] == mapSize[0] {
-//            return .edge
-//        } else {
-//            return .good
-//        }
-//    case .movementUp :
-//        if playerPosition[0] == 0 {
-//            return .edge
-//        } else {
-//            return .good
-//        }
-//    default :
-//        return .bigError
-//    }
-//    if let playerUnderneathType = UnderneathMapKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
-//        
-//    } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]]) {
-//        return .good
-//    }else {
-//        return .bigError
-//    }
-    
+
     
 }
 
@@ -158,6 +119,11 @@ func movement(oldPlayerPosition: inout [Int], playerPosition: inout [Int], mapSc
             // Give the user the option to print the tutorial again.
         case .helpMenu1, .helpMenu2 :
             return (false, .tutorial)
+        case .tasks:
+            return (false, .tasks)
+        case .debug:
+            debug(food: &foodAmount)
+            return (false, .debug)
         }
         
     } else {

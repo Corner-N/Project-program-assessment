@@ -19,7 +19,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		458D6F442E29CB54007B7D23 /* swen-2025-conservation-game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "swen-2025-conservation-game"; sourceTree = BUILT_PRODUCTS_DIR; };
+		458D6F442E29CB54007B7D23 /* swen-2025-conservation-game */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; name = "swen-2025-conservation-game"; path = "/Users/conornewdick/Programming/Swift/Swen-2025/swen-2025-conservation-game/build/Debug/swen-2025-conservation-game"; sourceTree = "<absolute>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -45,16 +45,7 @@
 			isa = PBXGroup;
 			children = (
 				458D6F462E29CB54007B7D23 /* swen-2025-conservation-game */,
-				458D6F452E29CB54007B7D23 /* Products */,
 			);
-			sourceTree = "<group>";
-		};
-		458D6F452E29CB54007B7D23 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				458D6F442E29CB54007B7D23 /* swen-2025-conservation-game */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -107,7 +98,7 @@
 			mainGroup = 458D6F3B2E29CB54007B7D23;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = 458D6F452E29CB54007B7D23 /* Products */;
+			productRefGroup = 458D6F3B2E29CB54007B7D23;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (

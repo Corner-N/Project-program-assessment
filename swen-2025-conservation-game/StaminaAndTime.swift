@@ -5,7 +5,7 @@
 //  Created by Conor Newdick on 04/08/2025.
 //
 
-
+import Foundation
 
 /// decides whether the player is standing on a normal tile or a special tile.
 ///
@@ -22,7 +22,7 @@ func typeofTitle(undernethMap: [[Int]], playerPosition: [Int]) -> Bool? {
     } else if let _ = UnderneathMapSpecialKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]])  {
         return false
     } else {
-        return nil
+        exit(3)
     }
 }
 
@@ -36,7 +36,7 @@ func typeofTitle(undernethMap: [[Int]], playerPosition: [Int]) -> Bool? {
 ///     the player's current position
 ///     the time before it was advanced used by food
 ///     the decription for the tile the player is standing on.
-func normalTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: inout String, playerPosition: [Int], oldTime: inout Double,) -> String? {
+func normalTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: inout String, playerPosition: [Int], oldTime: inout Double,) -> String {
     
     // Logs the time before the player moves to be used in the food function.
     oldTime = time
@@ -66,10 +66,10 @@ func normalTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: ino
             return MainStatements.river.rawValue
         case .walls :
             print("how")
-            return nil
+            exit(2)
         }
     } else {
-        return nil
+        exit(2)
     }
 }
 
@@ -84,7 +84,7 @@ func normalTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: ino
 ///     the time before it was advanced used by food
 ///     the amount of food the player has
 /// returns: the decription for the tile the player is standing on.
-func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: inout String, playerPosition: [Int], oldTime: inout Double, hutFood: inout [UnderneathMapSpecialKey], food: inout Int) -> String? {
+func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: inout String, playerPosition: [Int], oldTime: inout Double, tasks: inout [Task], food: inout Int) -> String {
     
     oldTime = time
     
@@ -119,6 +119,10 @@ func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: in
             return specialStatements.areteForksTurnOff.rawValue
         case .areteStreamTrapLineTurnOff:
             time += 0.2
+            if !tasks.contains(.areteStreamTrapLineTurnOff) {
+                food += 3
+                tasks.append(.areteStreamTrapLineTurnOff)
+            }
             return specialStatements.areteStreamTrapLineTurnOff.rawValue
         case .areteTrackToAlpine:
             time += 0.2
@@ -131,57 +135,78 @@ func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: in
             return specialStatements.mitreFlats.rawValue
         case .cowCreekHut:
             time = 7.0
-            if hutFood.contains(.cowCreekHut) {
+            if !tasks.contains(.cowCreekHut) {
                 food += 3
-                //courtesey of xcode ai
-                hutFood.remove(at: hutFood.firstIndex(of: .cowCreekHut)! ) // check if doc is okay with this
+                tasks.append(.cowCreekHut)
+                
             }
             return specialStatements.cowCreekHut.rawValue
         case .midKingBiv:
             time = 7.0
-            if hutFood.contains(.midKingBiv) {
+            if !tasks.contains(.midKingBiv) {
                 food += 3
-                hutFood.remove(at: hutFood.firstIndex(of: .midKingBiv)! )
+                tasks.append(.midKingBiv)
             }
             return specialStatements.midKingBiv.rawValue
             
         case .areteForksHut:
             time = 7.0
-            if hutFood.contains(.areteForksHut) {
+            if !tasks.contains(.areteForksHut) {
                 food += 3
-                hutFood.remove(at: hutFood.firstIndex(of: .areteForksHut)! )
+                tasks.append(.areteForksHut)
             }
             return specialStatements.areteForksHut.rawValue
             
         case .areteHut:
             time = 7.0
-            if hutFood.contains(.areteHut) {
+            if !tasks.contains(.areteHut) {
                 food += 3
-                hutFood.remove(at: hutFood.firstIndex(of: .areteHut)! )
+                tasks.append(.areteHut)
             }
             return specialStatements.areteHut.rawValue
             
         case .turnOffToMitreTrapLine:
             time += 0.2
+            if !tasks.contains(.turnOffToMitreTrapLine) {
+                food += 3
+                tasks.append(.turnOffToMitreTrapLine)
+            }
             return specialStatements.turnOffToMitreTrapLine.rawValue
         case .baldyCreekIntoAlpine:
             time += 0.2
             return specialStatements.baldyCreekIntoAlpine.rawValue
+            
         case .mitreTrapLineToAlpine:
             time += 0.2
+            if !tasks.contains(.mitreTrapLineToAlpine) {
+                food += 3
+                tasks.append(.mitreTrapLineToAlpine)
+            }
             return specialStatements.mitreTrapLineToAlpine.rawValue
         case .waingawaRiverTrapLine:
             time += 0.2
+            if !tasks.contains(.waingawaRiverTrapLine) {
+                food += 3
+                tasks.append(.waingawaRiverTrapLine)
+            }
             return specialStatements.waingawaRiverTrapLine.rawValue
         case .waingawaRiverTrapLineEnd:
             time += 0.2
+            if !tasks.contains(.waingawaRiverTrapLineEnd) {
+                food += 3
+                tasks.append(.waingawaRiverTrapLineEnd)
+            }
             return specialStatements.waingawaRiverTrapLineEnd.rawValue
         case .areteStreamTrapLineToAlpine:
             time += 0.2
+            if !tasks.contains(.areteStreamTrapLineToAlpine) {
+                food += 3
+                tasks.append(.areteStreamTrapLineToAlpine)
+            }
             return specialStatements.areteStreamTrapLineToAlpine.rawValue
         }
     } else {
-        return nil
+        exit(2)
     }
 }
 
@@ -201,8 +226,7 @@ func foodCheck(currentTime: Double, oldTime: Double, keyTimes: [Double], food: i
             break
         }
     }
-    
-    //
+
     if food < 0 {
         alive = false
     } else {

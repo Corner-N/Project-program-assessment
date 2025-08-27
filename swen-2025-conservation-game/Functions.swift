@@ -19,6 +19,7 @@ func stringInput(prompt: String, errorMessage: String) -> String {
             return userInput
         } else {
             print(errorMessage)
+            exit(4)
         }
     }
 }
@@ -66,7 +67,7 @@ func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition
     mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
 }
 
-func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn, timeString: String, food: Int, alive: Bool, descriptionText: String) {
+func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn, timeString: String, food: Int, alive: Bool, descriptionText: String, win: Bool) {
     
     
     // Clear the screen
@@ -80,11 +81,28 @@ func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn
         print()
     }
     
+    if win {
+        print("""
+            Well done!!
+            You won 
+        """)
+        sleep(4)
+        exit(0)
+    }
+    
     if !alive {
         print("You ran out of food and died")
         sleep(2)
         exit(0)
     }
+    
+    print("""
+          Movement controlls: W A S D
+          View tasks: T
+          Help: H or ?
+          """)
+    
+    print("")
     
     print("the time is \(timeString)")
     print("you have \(food) food left")
@@ -96,8 +114,30 @@ func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn
         
     } else if movementReturn == .tutorial {
         controlsAndMapKey()
-    } else if movementReturn == .good {
+    } else if movementReturn == .tasks {
+        printTasks(tasksCompleted: tasksCompleted, allTasks: allTasks)
+    } else if movementReturn == .debug {
+        print("""
+            tasks completed \(tasksCompleted)
+            old time \(oldTime)
+            character position \(characterPosition)
+            old player position \(oldPlayerPosition)
+            underneath player \(underneathPlayer)
+            tasks completed \(tasksCompleted.count) vs \(allTasks.count)
+            
+            
+            """)
+    } else {
         print(descriptionText)
     }
 }
 
+
+/// debug mode, remove when submitting
+///
+/// params
+///
+///     food
+func debug(food: inout Int) {
+    food = 100
+}
