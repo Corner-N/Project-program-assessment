@@ -7,14 +7,12 @@
 
 import Foundation
 
-/// decides whether the player is standing on a normal tile or a special tile.
-///
-/// parameters:
-///
-///     number underneath the player.
-///     player position
-///
-/// returns whether the user is on a special title or a normal one.
+
+/// <#Description#>
+/// - Parameters:
+///   - undernethMap: <#undernethMap description#>
+///   - playerPosition: <#playerPosition description#>
+/// - Returns: <#description#>
 func typeofTitle(undernethMap: [[Int]], playerPosition: [Int]) -> Bool? {
     
     if let _ = UnderneathMapKey(rawValue: underneathMap[playerPosition[0]][playerPosition[1]])  {
@@ -120,7 +118,6 @@ func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: in
         case .areteStreamTrapLineTurnOff:
             time += 0.2
             if !tasks.contains(.areteStreamTrapLineTurnOff) {
-                food += 3
                 tasks.append(.areteStreamTrapLineTurnOff)
             }
             return specialStatements.areteStreamTrapLineTurnOff.rawValue
@@ -168,7 +165,6 @@ func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: in
         case .turnOffToMitreTrapLine:
             time += 0.2
             if !tasks.contains(.turnOffToMitreTrapLine) {
-                food += 3
                 tasks.append(.turnOffToMitreTrapLine)
             }
             return specialStatements.turnOffToMitreTrapLine.rawValue
@@ -179,28 +175,24 @@ func specialTileTime(time:  inout Double, UnderneathMap: [[Int]], timeString: in
         case .mitreTrapLineToAlpine:
             time += 0.2
             if !tasks.contains(.mitreTrapLineToAlpine) {
-                food += 3
                 tasks.append(.mitreTrapLineToAlpine)
             }
             return specialStatements.mitreTrapLineToAlpine.rawValue
         case .waingawaRiverTrapLine:
             time += 0.2
             if !tasks.contains(.waingawaRiverTrapLine) {
-                food += 3
                 tasks.append(.waingawaRiverTrapLine)
             }
             return specialStatements.waingawaRiverTrapLine.rawValue
         case .waingawaRiverTrapLineEnd:
             time += 0.2
             if !tasks.contains(.waingawaRiverTrapLineEnd) {
-                food += 3
                 tasks.append(.waingawaRiverTrapLineEnd)
             }
             return specialStatements.waingawaRiverTrapLineEnd.rawValue
         case .areteStreamTrapLineToAlpine:
             time += 0.2
             if !tasks.contains(.areteStreamTrapLineToAlpine) {
-                food += 3
                 tasks.append(.areteStreamTrapLineToAlpine)
             }
             return specialStatements.areteStreamTrapLineToAlpine.rawValue

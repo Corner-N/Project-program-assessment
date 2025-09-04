@@ -4,59 +4,49 @@
 //
 //  Created by Conor Newdick on 31/07/2025.
 //
+//34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 
 import Foundation
 
-/// Gets a String user inout from the user
-///
-/// Parameters:  Prompt, Error message
-/// Return:  a String of the user's input
+/// Gets input from the user and returns it as a string.
+/// - Parameters:
+///   - prompt: The message printed to tell the user what to enter.
+///   - errorMessage: The error message the user will see if somehore they don't input a valid string.
 func stringInput(prompt: String, errorMessage: String) -> String {
-    while true {
+    
+    // Put a terminator after the prompt so that the user's input will be on the same line.
+    print(prompt, terminator: " ")
+    
+    // safely set a user string constant to a user input so that it can be read by the input function.
+    if let userInput = readLine(){
         
-        print(prompt)
-        if let userInput = readLine(){
-            return userInput
-        } else {
-            print(errorMessage)
-            exit(4)
-        }
+        // Return the string so that the movement function can use it.
+        return userInput
+    } else {
+        
+        // The user should never be able to get here.
+        print(errorMessage)
+        exit(4)
     }
-}
-
-/// Displays the key for controls and what the different parts of the map mean
-func controlsAndMapKey () {
-    print("""
-    Controlls: use w,a,s,d to move around
     
-    Map key:
-    ^   Is forest area - moving in this area will take a long time.
-    ,   Is alpine area - moving in this area will not take very long.
-    ∙   Is a track - moving here will not take much time at all
-    °   Is a trap line - moving here will take longer than a track but is still fast.
-    ≈   Is a river - this won't take as long as forest but is still slow.
-    ~   Is a stream - moving here isn't fast but it's better than bush bashing.
-    -   Is a bridge - this takes as long as a track.
-    _   Is a gorge - don't even try.
-    |   Is a cliff - are you trying to get killed.
-    your player character is \u{001B}[32m@\u{001B}[0m
-    
-    Enter ? or h to see this again.
-    """)
 }
 
 
-// MARK: Update map
-/// Updates and prints the map.
-///
-/// Parameters:
-///
-///     playerCharacter: let constant allways contain an @ symbol.
-///     oldPlayerPosition: the position the user used to be at, will be used to replace the character that used to be there.
-///     playerPosition: where the player is now.
-///     underneathPlayer: the character the player is currently covering.
-///     mapscreen: the 2d array used for the screen.
-func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition: [Int], underneathPlayer: inout String, mapScreen: inout [[String]]) {
+
+/// Updates the map for everytime something changes like at the start of the game or when the player moves.
+/// - Parameters:
+///   - playerCharacter
+///   - oldPlayerPosition: Used to replace the charcter the player was standing.
+///   - playerPosition: Used to place the player chcacter in the new position.
+///   - underneathPlayer: The character the player is currently standing on, used to replace this character when the player moves.
+///   - mapScreen: The full map the player see's which this function updates.
+func updateMap(
+    playerCharacter: String,
+    oldPlayerPosition: [Int],
+    playerPosition: [Int],
+    underneathPlayer: inout String,
+    mapScreen: inout [[String]]
+) {
     
     
     // Replace where the charcter used to be with the character that was "underneath" them.
@@ -67,56 +57,91 @@ func updateMap(playerCharacter: String, oldPlayerPosition: [Int], playerPosition
     mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
 }
 
-func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn, timeString: String, food: Int, alive: Bool, descriptionText: String, win: Bool) {
+
+/// Updates what the player see's every time the player enters somthing.
+/// - Parameters:
+///   - map: Used to print the map at the right point.
+///   - movementReturn: Output from the movement function to determine what kind of input the user entered and whether they were sucsessfull with movement.
+///   - timeString: The time which will be displayed rounded to 2dp
+///   - food:
+///   - descriptionText: The text which tells the user what tile they are standing on.
+///   - win: Used to exit The game when the user wins.
+///   - allTasks: Pased Into the task printing function.
+///   - tasksCompleted: Pased into the task printing function.
+func updateGameScene (
+    map: [[String]],
+    userAction: CorrectUserInputs,
+    timeString: String,
+    food: Int, alive: Bool,
+    descriptionText: String,
+    win: Bool,
+    allTasks: [Task],
+    tasksCompleted: [Task],
+    movmentReturn: MovementReturn
+) {
     
     
-    // Clear the screen
+    // Clear the screen so the Screen is clean and can be updated.
     print("\u{001B}[2J")
     
-    // print the map
-    for row in map {
-        for colum in row {
-            print(colum, terminator: "")
-        }
-        print()
-    }
+    // Print the map here so that the user can allways
+    printMap(gameMap: map)
     
+    // I check the win condition here, before I check if the user dies, because if the user dies and wins on the same move, I think they should win, not loose.
     if win {
         print("""
             Well done!!
             You won 
         """)
+        
+        // Program sleeps here to give the player some time to read th e text before the game exits.
         sleep(4)
         exit(0)
     }
     
+    // I check if the player is dead here so that the rest of the information doesn't show when the player dies.
     if !alive {
         print("You ran out of food and died")
-        sleep(2)
+        
+        // Same as for win condition.
+        sleep(4)
         exit(0)
     }
     
+    // Print the controlls here so that the player allways sees them right below the map.
     print("""
           Movement controlls: W A S D
           View tasks: T
           Help: H or ?
+          
           """)
     
-    print("")
+    // This is the information the user will allways need to see.
+    print("- The time is: \(timeString)")
+    print("- You have: \(food) food left.")
     
-    print("the time is \(timeString)")
-    print("you have \(food) food left")
-    
-    // Print a different message depending on what the user tried to input.
-    
-    if movementReturn == .edge || movementReturn == .wall {
-        print("you cannor go any further")
+    // Print a different message depending on what the user tried to input using a switch statement because there are many cases.
+    switch userAction{
         
-    } else if movementReturn == .tutorial {
-        controlsAndMapKey()
-    } else if movementReturn == .tasks {
+    // These are the cases for when the player has tried to move.
+    case .movementUp, .movementDown, .movementLeft, .movementRight:
+        
+        // The colision only needs to display text, because the colision script stops the player from moving before this.
+        print("you cannot go any further")
+    
+    // These are the cases for menu options which display information to the player.
+    case .helpMenu:
+        
+        // There is lots of text here so it is printed in a funcition.
+        MapKey()
+        
+    case .tasks:
+        
+        // Prints a complete list of the tasks for the user with the ones they have done being ticked off
         printTasks(tasksCompleted: tasksCompleted, allTasks: allTasks)
-    } else if movementReturn == .debug {
+        
+        // Get rid of this before turn in.
+    case .debug:
         print("""
             tasks completed \(tasksCompleted)
             old time \(oldTime)
@@ -125,19 +150,19 @@ func updatescreen (map: [[String]], time: Double, movementReturn: MovementReturn
             underneath player \(underneathPlayer)
             tasks completed \(tasksCompleted.count) vs \(allTasks.count)
             
-            
             """)
-    } else {
-        print(descriptionText)
+        
+    case .invalid:
+        print("Enter a correct value")
     }
 }
 
 
-/// debug mode, remove when submitting
-///
-/// params
-///
-///     food
+
+/// debug mode gives the user 
+/// - Parameter food: food the user has left
 func debug(food: inout Int) {
     food = 100
 }
+
+
