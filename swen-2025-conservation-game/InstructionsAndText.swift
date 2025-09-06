@@ -103,7 +103,7 @@ func startGame(map: [[String]], taskscompleted: [Task], alltasks: [Task]) {
     print("\u{001B}[2J")
     
     print("""
-        
+        GWBN, in case you didn't know is a volunteer program based in the lower north island. Which maintains much of the backcountry infrastructure here, like huts tracks and traplines. 
         """)
     
     // makes the user press enter to continue.

@@ -56,6 +56,12 @@ var alive = true
 // used to end the program if the user wins.
 var win = false
 
+// What action the user has taken
+var userAction: CorrectUserInputs = .invalid
+
+// The variable used to store the outcome of the movement function.
+var movementOutcome: (Bool, MovementReturn) = (false, .good)
+
 // Update the map so the player character apears in the starting place when it is first printed
 updateMap(
     playerCharacter: playerCharacter,
@@ -69,31 +75,22 @@ updateMap(
 startGame(map: gameMap, taskscompleted: tasksCompleted, alltasks: allTasks)
 
 // Displays the scene for the start of the game.
-updateGameScene(
-    map: gameMap,
-    movementReturn: .good,
-    timeString: timeString,
-    food: foodAmount,
-    alive: true,
-    descriptionText: descriptionText,
-    win: false,
-    allTasks: allTasks,
-    tasksCompleted: tasksCompleted
+updateGameScene(map: gameMap, userAction: userAction, timeString: timeString, food: foodAmount, alive: alive, descriptionText: descriptionText, win: win, allTasks: allTasks, tasksCompleted: tasksCompleted, movmentReturn: .good
 )
 
 // The loop for gameplay, each time this loops the player carries out an action
 while true {
     
     // Get the input to determine what happens next.
-    let InputReturn = Inputs(
-        oldPlayerPosition: &oldPlayerPosition,
-        playerPosition: &characterPosition,
-        mapScreen: gameMap,
-        mapSize: mapSize
-        
-    )
-    // Will only run if the player is moving.
-    if InputReturn.0 == true {
+    let inputReturn = Inputs()
+    
+    // Checks if the user tried to move.
+    if inputReturn.0 {
+        movementOutcome = movement(oldPlayerPosition: &oldPlayerPosition, playerPosition: &characterPosition, mapSize: mapSize, underneathMap: underneathMap, movementDirection: inputReturn.1)
+    }
+    
+    // Will only run if the player is moving because if this happens multiple times before the player moves then it causes multiple errors
+    if movementOutcome.0 && inputReturn.0 {
         
         // I only update the map if the player is moving because if we don't then the map heavily breaks.
         updateMap(
@@ -157,16 +154,7 @@ while true {
     }
     
     // I allways update the game scene even if the player doesn't move so that i don't get lots of the same error message on screen at once.
-    updateGameScene(
-        map: gameMap,
-        movementReturn: InputReturn.1,
-        timeString: timeString,
-        food: foodAmount,
-        alive: alive,
-        descriptionText: descriptionText,
-        win: win,
-        allTasks: allTasks,
-        tasksCompleted: tasksCompleted
-    )
+    updateGameScene(map: gameMap, userAction: userAction, timeString: timeString, food: foodAmount, alive: alive, descriptionText: descriptionText, win: win, allTasks: allTasks, tasksCompleted: tasksCompleted, movmentReturn: movementOutcome.1)
+    
 }
 

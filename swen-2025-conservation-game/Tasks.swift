@@ -65,6 +65,9 @@ func printTasks(tasksCompleted: [Task], allTasks: [Task]) {
                 print("[ ] - ", terminator: "")
             }
             print(task.rawValue)
+            
+            // This will make it clrearer to the player where the particular places.
+            instructions()
         }
     }
 }

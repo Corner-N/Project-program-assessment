@@ -8,7 +8,7 @@
 
 import Foundation
 
-/// Gets input from the user and returns it as a string.
+/// Gets input from the user and returns it as a string
 /// - Parameters:
 ///   - prompt: The message printed to tell the user what to enter.
 ///   - errorMessage: The error message the user will see if somehore they don't input a valid string.
@@ -151,9 +151,8 @@ func updateGameScene (
             tasks completed \(tasksCompleted.count) vs \(allTasks.count)
             
             """)
-        
     case .invalid:
-        print("Enter a correct value")
+        print("Please enter one of the values above.")
     }
 }
 
