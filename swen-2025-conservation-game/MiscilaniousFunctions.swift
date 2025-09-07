@@ -4,7 +4,6 @@
 //
 //  Created by Conor Newdick on 31/07/2025.
 //
-//34567890123456789012345678901234567890123456789012345678901234567890123456789012345678901234567890
 
 import Foundation
 
@@ -33,31 +32,6 @@ func stringInput(prompt: String, errorMessage: String) -> String {
 
 
 
-/// Updates the map for everytime something changes like at the start of the game or when the player moves.
-/// - Parameters:
-///   - playerCharacter
-///   - oldPlayerPosition: Used to replace the charcter the player was standing.
-///   - playerPosition: Used to place the player chcacter in the new position.
-///   - underneathPlayer: The character the player is currently standing on, used to replace this character when the player moves.
-///   - mapScreen: The full map the player see's which this function updates.
-func updateMap(
-    playerCharacter: String,
-    oldPlayerPosition: [Int],
-    playerPosition: [Int],
-    underneathPlayer: inout String,
-    mapScreen: inout [[String]]
-) {
-    
-    
-    // Replace where the charcter used to be with the character that was "underneath" them.
-    mapScreen[oldPlayerPosition[0]][oldPlayerPosition[1]] = underneathPlayer
-    // Get the new character which is undertheath the player.
-    underneathPlayer = mapScreen[playerPosition[0]][playerPosition[1]]
-    // add the player to the map in the new position
-    mapScreen[playerPosition[0]][playerPosition[1]] = playerCharacter
-}
-
-
 /// Updates what the player see's every time the player enters somthing.
 /// - Parameters:
 ///   - map: Used to print the map at the right point.
@@ -77,7 +51,7 @@ func updateGameScene (
     win: Bool,
     allTasks: [Task],
     tasksCompleted: [Task],
-    movmentReturn: MovementReturn
+    movementOutcome: MovementReturn
 ) {
     
     
@@ -126,8 +100,11 @@ func updateGameScene (
     // These are the cases for when the player has tried to move.
     case .movementUp, .movementDown, .movementLeft, .movementRight:
         
+        print(descriptionText)
         // The colision only needs to display text, because the colision script stops the player from moving before this.
-        print("you cannot go any further")
+        if movementOutcome == .wall || movementOutcome == .edge {
+            print("you cannot go any further")
+        }
     
     // These are the cases for menu options which display information to the player.
     case .helpMenu:
@@ -140,28 +117,7 @@ func updateGameScene (
         // Prints a complete list of the tasks for the user with the ones they have done being ticked off
         printTasks(tasksCompleted: tasksCompleted, allTasks: allTasks)
         
-        // Get rid of this before turn in.
-    case .debug:
-        print("""
-            tasks completed \(tasksCompleted)
-            old time \(oldTime)
-            character position \(characterPosition)
-            old player position \(oldPlayerPosition)
-            underneath player \(underneathPlayer)
-            tasks completed \(tasksCompleted.count) vs \(allTasks.count)
-            
-            """)
     case .invalid:
         print("Please enter one of the values above.")
     }
 }
-
-
-
-/// debug mode gives the user 
-/// - Parameter food: food the user has left
-func debug(food: inout Int) {
-    food = 100
-}
-
-

@@ -16,6 +16,9 @@ let mapSize = [29, 66]
 // Used to determine whether the player should use food on a particular action
 let FeedingTimes = [8.0, 12.5, 18, 0.0]
 
+// Used to give the user food when they get to a hut.
+let hutFoodAmount = 5
+
 // Used to check against tasksCompleted
 let allTasks: [Task] = [
     .cowCreekHut,
@@ -44,11 +47,11 @@ var characterPosition = [29, 65]
 
 // Used to replace the character where the player was standing before they moved.
 var oldPlayerPosition = [29, 65]
-var underneathPlayer = ""
+var underneathPlayer = "∙"
 
 // The string used for the time rounded to one decimal point.
 var timeString = "8.0"
-var foodAmount = 10
+var foodAmount = 15
 
 // used to end the program if the user looses
 var alive = true
@@ -57,7 +60,7 @@ var alive = true
 var win = false
 
 // What action the user has taken
-var userAction: CorrectUserInputs = .invalid
+var userAction: (Bool, CorrectUserInputs) = (false, .invalid)
 
 // The variable used to store the outcome of the movement function.
 var movementOutcome: (Bool, MovementReturn) = (false, .good)
@@ -75,22 +78,38 @@ updateMap(
 startGame(map: gameMap, taskscompleted: tasksCompleted, alltasks: allTasks)
 
 // Displays the scene for the start of the game.
-updateGameScene(map: gameMap, userAction: userAction, timeString: timeString, food: foodAmount, alive: alive, descriptionText: descriptionText, win: win, allTasks: allTasks, tasksCompleted: tasksCompleted, movmentReturn: .good
+updateGameScene(
+    map: gameMap,
+    userAction: userAction.1,
+    timeString: timeString,
+    food: foodAmount,
+    alive: alive,
+    descriptionText: descriptionText,
+    win: win,
+    allTasks: allTasks,
+    tasksCompleted: tasksCompleted,
+    movementOutcome: .good
 )
 
 // The loop for gameplay, each time this loops the player carries out an action
 while true {
     
     // Get the input to determine what happens next.
-    let inputReturn = Inputs()
+    userAction = Inputs()
     
     // Checks if the user tried to move.
-    if inputReturn.0 {
-        movementOutcome = movement(oldPlayerPosition: &oldPlayerPosition, playerPosition: &characterPosition, mapSize: mapSize, underneathMap: underneathMap, movementDirection: inputReturn.1)
+    if userAction.0 {
+        movementOutcome = movement(
+            oldPlayerPosition: &oldPlayerPosition,
+            playerPosition: &characterPosition,
+            mapSize: mapSize,
+            underneathMap: underneathMap,
+            movementDirection: userAction.1
+        )
     }
     
     // Will only run if the player is moving because if this happens multiple times before the player moves then it causes multiple errors
-    if movementOutcome.0 && inputReturn.0 {
+    if movementOutcome.0 && userAction.0 {
         
         // I only update the map if the player is moving because if we don't then the map heavily breaks.
         updateMap(
@@ -113,18 +132,16 @@ while true {
             descriptionText = normalTileTime(
                 time: &time,
                 UnderneathMap: underneathMap,
-                timeString: &timeString,
                 playerPosition: characterPosition,
                 oldTime: &oldTime
             )
         } else {
-            descriptionText = specialTileTime(
+            descriptionText = specialTileUpdate(
                 time: &time,
-                UnderneathMap: underneathMap,
-                timeString: &timeString,
+                underneathMap: underneathMap,
                 playerPosition: characterPosition,
                 oldTime: &oldTime,
-                tasks: &tasksCompleted,
+                tasksCompleted: &tasksCompleted,
                 food: &foodAmount
             )
         }
@@ -140,7 +157,7 @@ while true {
         timeString = String(format: "%.2f", time)
         
         // I check if the player has won here because the user will only ever win when they move.
-        win = trackTasks(tasksUncompleted: tasksCompleted, allTasks: allTasks)
+        win = trackTasks(tasksCompleted: tasksCompleted, allTasks: allTasks)
         
         // I check if the user has used food here because if I do it later it might register them eating food multiple times if they enter an incorect input.
         foodCheck(
@@ -149,12 +166,11 @@ while true {
             keyTimes: FeedingTimes,
             food: &foodAmount,
             alive: &alive,
-            underneathPlayer: underneathPlayer
         )
     }
     
     // I allways update the game scene even if the player doesn't move so that i don't get lots of the same error message on screen at once.
-    updateGameScene(map: gameMap, userAction: userAction, timeString: timeString, food: foodAmount, alive: alive, descriptionText: descriptionText, win: win, allTasks: allTasks, tasksCompleted: tasksCompleted, movmentReturn: movementOutcome.1)
+    updateGameScene(map: gameMap, userAction: userAction.1, timeString: timeString, food: foodAmount, alive: alive, descriptionText: descriptionText, win: win, allTasks: allTasks, tasksCompleted: tasksCompleted, movementOutcome: movementOutcome.1)
     
 }
 

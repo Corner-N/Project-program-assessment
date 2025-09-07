@@ -7,19 +7,7 @@
 
 import Foundation
 
-/// prints the map the user will see
-///
-/// parameters:
-///
-///     map
-func printMap(gameMap: [[String]]) {
-    for row in gameMap {
-        for column in row {
-            print(column, terminator: "")
-        }
-        print()
-    }
-}
+
 
 /// Displays the key for controls and what the different parts of the map mean
 func MapKey () {
@@ -103,7 +91,8 @@ func startGame(map: [[String]], taskscompleted: [Task], alltasks: [Task]) {
     print("\u{001B}[2J")
     
     print("""
-        GWBN, in case you didn't know is a volunteer program based in the lower north island. Which maintains much of the backcountry infrastructure here, like huts tracks and traplines. 
+        GWBN, in case you didn't know is a volunteer program based in the lower north island. 
+        Which maintains much of the backcountry infrastructure here, like huts tracks and traplines. 
         """)
     
     // makes the user press enter to continue.
@@ -207,15 +196,12 @@ func startGame(map: [[String]], taskscompleted: [Task], alltasks: [Task]) {
     let _ = readLine()
     print("\u{001B}[2J")
     
-    print("These are your tasks, go to all these places and chek on them")
+    print("These are your tasks, go to all these places and check on them")
     printTasks(tasksCompleted: taskscompleted, allTasks: alltasks)
     print("press enter: ", terminator: "")
     
-    // Makes the user press enter to continue
     let _ = readLine()
     print("\u{001B}[2J")
-    
-    instructions()
 }
 
 

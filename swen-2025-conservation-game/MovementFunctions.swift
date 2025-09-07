@@ -97,8 +97,7 @@ func Inputs(
         }
         
     } else {
-        return (false, .invalid)
-    }
+        return (false, .invalid)    }
     
 }
 

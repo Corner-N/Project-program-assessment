@@ -20,7 +20,6 @@ enum CorrectUserInputs: String {
     case helpMenu = "?"
     case tasks = "t"
     
-    case debug = "debug1"
     case invalid
 }
 
@@ -113,10 +112,10 @@ enum specialStatements: String {
         You come to a large hut overlooking a lawn, there is a medium sized stream just south of the hut.
         there is no food left in the ranger's cache at the hut.
         """
-    case turnOffToCowCreek = "A sign pointing east indicates cow creek hut. You pick up some oats and BAKED BEANS from the hut's food cache"
+    case turnOffToCowCreek = "A sign pointing east indicates cow creek hut."
     case cowCreekHut = """
         you come to a medium sized bright orange hut on the boudary of beach and podocarp forest, the river 
-        can be heard faintly in the distance.
+        can be heard faintly in the distance. 0You pick up some oats and BAKED BEANS from the hut's food cache
         """
     case turnOffToMidKingBiv = "From the creek a faint path marked with cruise tape leads into the bush to the south."
     case midKingBiv = """
